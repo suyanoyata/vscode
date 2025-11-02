@@ -201,8 +201,8 @@ export abstract class Part<MementoType extends object = object> extends Componen
 
 class PartLayout {
 
-	private static readonly HEADER_HEIGHT = 35;
-	private static readonly TITLE_HEIGHT = 35;
+	private static readonly HEADER_HEIGHT = 0;
+	private static readonly TITLE_HEIGHT = 0;
 	private static readonly Footer_HEIGHT = 35;
 
 	private headerVisible: boolean = false;

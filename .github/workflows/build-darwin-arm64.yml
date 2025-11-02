@@ -1,0 +1,44 @@
+name: Build VSCode Darwin ARM64
+
+on:
+  push:
+    branches:
+      - remove-header-rendering
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Yarn
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.yarn/cache
+            node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Setup Node.js v22.20.0
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.20.0"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Darwin ARM64
+        run: |
+          node --max-old-space-size=8192 ./node_modules/gulp/bin/gulp.js vscode-darwin-arm64-min
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vscode-darwin-arm64-min
+          path: ./.build/darwin-arm64/**

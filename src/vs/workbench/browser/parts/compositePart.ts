@@ -404,7 +404,16 @@ export abstract class CompositePart<T extends Composite, MementoType extends obj
 		const titleArea = append(parent, $('.composite'));
 		titleArea.classList.add('title');
 
-		titleArea.style.display = 'none'
+		const sidebarCompositeIds = [
+			'workbench.view.explorer',
+			'workbench.view.scm',
+			'workbench.view.search',
+			'workbench.view.debug',
+		];
+
+		if (sidebarCompositeIds.includes(this.defaultCompositeId)) {
+			titleArea.style.display = 'none';
+		}
 
 		// Left Title Label
 		this.titleLabel = this.createTitleLabel(titleArea);
